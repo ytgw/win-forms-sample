@@ -29,10 +29,28 @@ partial class Form1
     private void InitializeComponent()
     {
         components = new System.ComponentModel.Container();
+
+        countLabel = new Label();
+        countLabel.Text = "Count";
+        countLabel.Location = new Point(50, 10);
+        countLabel.Size = new Size(200, 30);
+
+        countInput = new NumericUpDown();
+        countInput.Minimum = 0;
+        countInput.Maximum = 1000;
+        countInput.Value = 0;
+        countInput.Location = new Point(260, 10);
+        countInput.Size = new Size(100, 30);
+
         AutoScaleMode = AutoScaleMode.Font;
-        ClientSize = new Size(800, 450);
+        ClientSize = new Size(900, 500);
+        Controls.Add(countLabel);
+        Controls.Add(countInput);
         Text = "Form1";
     }
 
     #endregion
+
+    private Label countLabel;
+    private NumericUpDown countInput;
 }
