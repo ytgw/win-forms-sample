@@ -2,7 +2,8 @@
     "customizations": {
         "vscode": {
             "extensions": [
-                "donjayamanne.githistory"
+                "donjayamanne.githistory",
+                "ms-dotnettools.csdevkit"
             ]
         }
     },

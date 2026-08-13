@@ -20,6 +20,9 @@ RUN DEBIAN_FRONTEND=noninteractive \
 ARG USERNAME=user
 ARG USER_UID
 
+# 同じUIDユーザーがいたら削除
+RUN userdel -r $(getent passwd $USER_UID | cut -d: -f1) || true
+
 # グループとユーザーを作成し、sudoグループに追加
 RUN useradd --uid $USER_UID -m -s /bin/bash $USERNAME \
     && usermod -aG sudo $USERNAME \

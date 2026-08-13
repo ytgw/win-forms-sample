@@ -18,4 +18,11 @@
     <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
   </PropertyGroup>
 
+  <!-- テストプロジェクトに対して internal へのアクセス権を許可 -->
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>test</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+
 </Project>
