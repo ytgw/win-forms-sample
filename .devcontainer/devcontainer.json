@@ -1,0 +1,15 @@
+{
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "donjayamanne.githistory"
+            ]
+        }
+    },
+    "dockerComposeFile": [
+        "../compose.yaml",
+        "compose.yaml"
+    ],
+    "service": "builder",
+    "workspaceFolder": "/home/user/app/"
+}

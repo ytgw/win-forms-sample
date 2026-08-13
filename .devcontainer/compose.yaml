@@ -1,0 +1,3 @@
+services:
+  builder:
+    command: sleep infinity

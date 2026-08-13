@@ -1,0 +1,10 @@
+services:
+  builder:
+    build:
+      context: '.'
+      args:
+        USER_UID: "${UID}"
+        WORKDIR: "${WORKDIR}"
+    working_dir: "${WORKDIR}"
+    volumes:
+      - ./:${WORKDIR}:rw
