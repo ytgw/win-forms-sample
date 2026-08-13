@@ -1,3 +1,7 @@
+using System;
+using System.Drawing;
+using System.Windows.Forms;
+
 namespace src;
 
 
@@ -17,7 +21,7 @@ public class ConditionalButton
         this.Button.Click += this.Button_Click;
     }
 
-    private void Button_Click(object? _sender, EventArgs _e)
+    private void Button_Click(object _sender, EventArgs _e)
     {
         this.count++;
         this.Button.Text = $"{this.text}-{this.count}";
@@ -91,7 +95,7 @@ public partial class Form1 : Form
         this.countInput.ValueChanged += CountInput_ValueChanged;
     }
 
-    private void CountInput_ValueChanged(object? _sender, EventArgs _e)
+    private void CountInput_ValueChanged(object _sender, EventArgs _e)
     {
         int count = (int)countInput.Value;
         foreach (ConditionalButton button in buttons)
