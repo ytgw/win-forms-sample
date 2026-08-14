@@ -16,7 +16,7 @@ public class ConditionalButton : IDisposable
     public ConditionalButton(string text, Func<int, bool> shouldBeVisible)
     {
         this.text = text;
-        this.Button = new Button { Text = text, Size = new Size(100, 40), Margin = new Padding(5) };
+        this.Button = new Button { Text = text, Size = new Size(100, 40), Margin = new Padding(5), Name = $"ConditionalButton_{text}" };
         this.ShouldBeVisible = shouldBeVisible;
         this.Button.Click += this.Button_Click;
     }

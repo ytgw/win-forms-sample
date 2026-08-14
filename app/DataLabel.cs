@@ -37,7 +37,8 @@ public class DataLabel : IDisposable
             Size = new Size(100, 30),
             Margin = new Padding(5),
             Location = new Point(0, 0),
-            TextAlign = ContentAlignment.MiddleCenter
+            TextAlign = ContentAlignment.MiddleCenter,
+            Name = $"DataLabelNameLabel_{text}"
         };
         this.ValueLabel = new Label
         {
@@ -45,7 +46,8 @@ public class DataLabel : IDisposable
             Size = new Size(100, 30),
             Margin = new Padding(5),
             Location = new Point(100, 0),
-            TextAlign = ContentAlignment.MiddleCenter
+            TextAlign = ContentAlignment.MiddleCenter,
+            Name = $"DataLabelValueLabel_{text}"
         };
         this.LabelPanel.Controls.Add(this.NameLabel);
         this.LabelPanel.Controls.Add(this.ValueLabel);

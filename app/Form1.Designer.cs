@@ -36,11 +36,13 @@ partial class Form1
         components = new System.ComponentModel.Container();
 
         countLabel = new Label();
+        countLabel.Name = "countLabel";
         countLabel.Text = "Count";
         countLabel.Location = new Point(50, 10);
         countLabel.Size = new Size(200, 30);
 
         countInput = new NumericUpDown();
+        countInput.Name = "countInput";
         countInput.Minimum = 0;
         countInput.Maximum = 1000;
         countInput.Value = 0;
