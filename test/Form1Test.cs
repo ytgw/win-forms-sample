@@ -1,4 +1,7 @@
-﻿namespace src;
+﻿using System;
+using System.Linq;
+
+namespace src;
 
 
 public class Form1UtilTest
@@ -6,58 +9,41 @@ public class Form1UtilTest
     [Fact]
     public void CreateButtonsは30個のボタンを返す()
     {
-        // Arrange
-        var util = new Form1Util();
-
         // Act
-        var buttons = util.CreateButtons();
+        var buttons = new Form1Util().CreateButtons();
 
         // Assert
         Assert.Equal(30, buttons.Length);
-    }
 
-    [Fact]
-    public void CreateButtonsのテキスト数字の下一桁を渡した場合に表示される()
-    {
-        // Arrange
-        var util = new Form1Util();
-
-        // Act
-        var buttons = util.CreateButtons();
-
-        // Assert
+        // Clean up
         foreach (var button in buttons)
         {
-            if (button.Button.Text is "2" or "12" or "22" or "32" or "42" or "52")
-            {
-                Assert.True(button.ShouldBeVisible(2));
-            }
-            else if (button.Button.Text is "3" or "13" or "23" or "33" or "43" or "53")
-            {
-                Assert.True(button.ShouldBeVisible(3));
-            }
-            else if (button.Button.Text is "5" or "15" or "25" or "35" or "45" or "55")
-            {
-                Assert.True(button.ShouldBeVisible(5));
-            }
-            else if (button.Button.Text is "7" or "17" or "27" or "37" or "47" or "57")
-            {
-                Assert.True(button.ShouldBeVisible(7));
-            }
-            else if (button.Button.Text is "9" or "19" or "29" or "39" or "49" or "59")
-            {
-                Assert.True(button.ShouldBeVisible(9));
-            }
-            else
-            {
-                Assert.Fail("Unexpected button text: " + button.Button.Text);
-            }
+            button.Dispose();
+        }
+    }
+
+    [Theory]
+    [InlineData(new string[] { "2", "12", "22", "32", "42", "52" }, 2)]
+    [InlineData(new string[] { "3", "13", "23", "33", "43", "53" }, 3)]
+    [InlineData(new string[] { "5", "15", "25", "35", "45", "55" }, 5)]
+    [InlineData(new string[] { "7", "17", "27", "37", "47", "57" }, 7)]
+    [InlineData(new string[] { "9", "19", "29", "39", "49", "59" }, 9)]
+    public void CreateButtonsのテキスト数字の下一桁で割り切れる場合に表示される(string[] buttonTexts, int num)
+    {
+        // Act
+        ConditionalButton[] buttons = new Form1Util().CreateButtons();
+
+        // Assert
+        ConditionalButton[] visibleButtons = buttons.Where(b => buttonTexts.Contains(b.Button.Text)).ToArray();
+        foreach (var button in visibleButtons)
+        {
+            Assert.True(button.ShouldBeVisible(num));
         }
 
         // Clean up
         foreach (var button in buttons)
         {
-            button.Button.Dispose();
+            button.Dispose();
         }
     }
 }

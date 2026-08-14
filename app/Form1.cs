@@ -5,7 +5,7 @@ using System.Windows.Forms;
 namespace src;
 
 
-public class ConditionalButton
+public class ConditionalButton: IDisposable
 {
     public readonly Button Button;
     public readonly Func<int, bool> ShouldBeVisible;
@@ -31,49 +31,60 @@ public class ConditionalButton
     {
         this.Button.Visible = this.ShouldBeVisible(num);
     }
+
+    public void Dispose()
+    {
+        this.Button.Click -= this.Button_Click;
+        this.Button.Dispose();
+    }
 }
 
 
 public class Form1Util
 {
+    public Func<int, bool> CreateVisibilityCondition(int denominator)
+    {
+        return (int num) => num % denominator == 0;
+    }
+
     public ConditionalButton[] CreateButtons()
     {
         ConditionalButton[] buttons = {
-            new ConditionalButton("2", (int num) => num % 2 == 0),
-            new ConditionalButton("3", (int num) => num % 3 == 0),
-            new ConditionalButton("5", (int num) => num % 5 == 0),
-            new ConditionalButton("7", (int num) => num % 7 == 0),
-            new ConditionalButton("9", (int num) => num % 9 == 0),
+            new ConditionalButton("2", this.CreateVisibilityCondition(2)),
+            new ConditionalButton("3", this.CreateVisibilityCondition(3)),
+            new ConditionalButton("5", this.CreateVisibilityCondition(5)),
+            new ConditionalButton("7", this.CreateVisibilityCondition(7)),
+            new ConditionalButton("9", this.CreateVisibilityCondition(9)),
 
-            new ConditionalButton("12", (int num) => num % 2 == 0),
-            new ConditionalButton("13", (int num) => num % 3 == 0),
-            new ConditionalButton("15", (int num) => num % 5 == 0),
-            new ConditionalButton("17", (int num) => num % 7 == 0),
-            new ConditionalButton("19", (int num) => num % 9 == 0),
+            new ConditionalButton("12", this.CreateVisibilityCondition(2)),
+            new ConditionalButton("13", this.CreateVisibilityCondition(3)),
+            new ConditionalButton("15", this.CreateVisibilityCondition(5)),
+            new ConditionalButton("17", this.CreateVisibilityCondition(7)),
+            new ConditionalButton("19", this.CreateVisibilityCondition(9)),
 
-            new ConditionalButton("22", (int num) => num % 2 == 0),
-            new ConditionalButton("23", (int num) => num % 3 == 0),
-            new ConditionalButton("25", (int num) => num % 5 == 0),
-            new ConditionalButton("27", (int num) => num % 7 == 0),
-            new ConditionalButton("29", (int num) => num % 9 == 0),
+            new ConditionalButton("22", this.CreateVisibilityCondition(2)),
+            new ConditionalButton("23", this.CreateVisibilityCondition(3)),
+            new ConditionalButton("25", this.CreateVisibilityCondition(5)),
+            new ConditionalButton("27", this.CreateVisibilityCondition(7)),
+            new ConditionalButton("29", this.CreateVisibilityCondition(9)),
 
-            new ConditionalButton("32", (int num) => num % 2 == 0),
-            new ConditionalButton("33", (int num) => num % 3 == 0),
-            new ConditionalButton("35", (int num) => num % 5 == 0),
-            new ConditionalButton("37", (int num) => num % 7 == 0),
-            new ConditionalButton("39", (int num) => num % 9 == 0),
+            new ConditionalButton("32", this.CreateVisibilityCondition(2)),
+            new ConditionalButton("33", this.CreateVisibilityCondition(3)),
+            new ConditionalButton("35", this.CreateVisibilityCondition(5)),
+            new ConditionalButton("37", this.CreateVisibilityCondition(7)),
+            new ConditionalButton("39", this.CreateVisibilityCondition(9)),
 
-            new ConditionalButton("42", (int num) => num % 2 == 0),
-            new ConditionalButton("43", (int num) => num % 3 == 0),
-            new ConditionalButton("45", (int num) => num % 5 == 0),
-            new ConditionalButton("47", (int num) => num % 7 == 0),
-            new ConditionalButton("49", (int num) => num % 9 == 0),
+            new ConditionalButton("42", this.CreateVisibilityCondition(2)),
+            new ConditionalButton("43", this.CreateVisibilityCondition(3)),
+            new ConditionalButton("45", this.CreateVisibilityCondition(5)),
+            new ConditionalButton("47", this.CreateVisibilityCondition(7)),
+            new ConditionalButton("49", this.CreateVisibilityCondition(9)),
 
-            new ConditionalButton("52", (int num) => num % 2 == 0),
-            new ConditionalButton("53", (int num) => num % 3 == 0),
-            new ConditionalButton("55", (int num) => num % 5 == 0),
-            new ConditionalButton("57", (int num) => num % 7 == 0),
-            new ConditionalButton("59", (int num) => num % 9 == 0),
+            new ConditionalButton("52", this.CreateVisibilityCondition(2)),
+            new ConditionalButton("53", this.CreateVisibilityCondition(3)),
+            new ConditionalButton("55", this.CreateVisibilityCondition(5)),
+            new ConditionalButton("57", this.CreateVisibilityCondition(7)),
+            new ConditionalButton("59", this.CreateVisibilityCondition(9)),
         };
 
         return buttons;
