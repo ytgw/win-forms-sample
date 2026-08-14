@@ -46,4 +46,44 @@ public class Form1UtilTest
             button.Dispose();
         }
     }
+
+    [Fact]
+    public void CreateLabelsは5個のラベルを返す()
+    {
+        // Act
+        var labels = new Form1Util().CreateLabels();
+
+        // Assert
+        Assert.Equal(5, labels.Length);
+
+        // Clean up
+        foreach (var label in labels)
+        {
+            label.Dispose();
+        }
+    }
+
+    [Fact]
+    public void CreateLabelsのテキストと非表示条件は関係している()
+    {
+        // Act
+        DataLabel[] labels = new Form1Util().CreateLabels();
+
+        // Assert
+        foreach (var label in labels)
+        {
+            if (label.LabelPanel.Controls[0].Text == "Label2") { Assert.True(label.ShouldBeVisible(2)); }
+            else if (label.LabelPanel.Controls[0].Text == "Label3") { Assert.True(label.ShouldBeVisible(3)); }
+            else if (label.LabelPanel.Controls[0].Text == "Label5") { Assert.True(label.ShouldBeVisible(5)); }
+            else if (label.LabelPanel.Controls[0].Text == "Label7") { Assert.True(label.ShouldBeVisible(7)); }
+            else if (label.LabelPanel.Controls[0].Text == "Label9") { Assert.True(label.ShouldBeVisible(9)); }
+            else { Assert.Fail($"Unexpected label text: {label.LabelPanel.Controls[0].Text}"); }
+        }
+
+        // Clean up
+        foreach (var label in labels)
+        {
+            label.Dispose();
+        }
+    }
 }

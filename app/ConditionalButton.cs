@@ -5,7 +5,7 @@ using System.Windows.Forms;
 namespace src;
 
 
-public class ConditionalButton: IDisposable
+public class ConditionalButton : IDisposable
 {
     public readonly Button Button;
     public readonly Func<int, bool> ShouldBeVisible;

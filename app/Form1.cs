@@ -54,6 +54,19 @@ public class Form1Util
 
         return buttons;
     }
+
+    public DataLabel[] CreateLabels()
+    {
+        DataLabel[] labels = {
+            new DataLabel("Label2", this.CreateVisibilityCondition(2)),
+            new DataLabel("Label3", this.CreateVisibilityCondition(3)),
+            new DataLabel("Label5", this.CreateVisibilityCondition(5)),
+            new DataLabel("Label7", this.CreateVisibilityCondition(7)),
+            new DataLabel("Label9", this.CreateVisibilityCondition(9)),
+        };
+
+        return labels;
+    }
 }
 
 
@@ -80,8 +93,8 @@ public partial class Form1 : Form
         IsSplitterFixed = true,
     };
 
-    // buttonPanel（左半分）
-    private readonly FlowLayoutPanel buttonPanel = new FlowLayoutPanel
+    // 左パネル
+    private readonly FlowLayoutPanel leftPanel = new FlowLayoutPanel
     {
         Dock = DockStyle.Fill,
         FlowDirection = FlowDirection.LeftToRight,
@@ -90,14 +103,18 @@ public partial class Form1 : Form
         AutoScroll = true,
     };
 
-    // 右半分パネル（今後の拡張用）
-    private readonly Panel rightPanel = new Panel
+    // 右パネル
+    private readonly FlowLayoutPanel rightPanel = new FlowLayoutPanel
     {
         Dock = DockStyle.Fill,
-        BackColor = Color.LightGray,
+        FlowDirection = FlowDirection.LeftToRight,
+        WrapContents = true,
+        Padding = new Padding(10),
+        AutoScroll = true,
     };
 
     private readonly ConditionalButton[] buttons = new Form1Util().CreateButtons();
+    private readonly DataLabel[] labels = new Form1Util().CreateLabels();
 
     public Form1()
     {
@@ -111,17 +128,23 @@ public partial class Form1 : Form
         bodyPanel.Controls.Add(splitContainer);
 
         // SplitContainer のパネルに追加
-        splitContainer.Panel1.Controls.Add(buttonPanel);
+        splitContainer.Panel1.Controls.Add(leftPanel);
         splitContainer.Panel2.Controls.Add(rightPanel);
 
-        // フォームにコントロール追加
-        this.Controls.Add(headerPanel);
+        // フォームにコントロール追加(順番重要)
         this.Controls.Add(bodyPanel);
+        this.Controls.Add(headerPanel);
 
-        // buttonPanel にボタン追加
+        // leftPanel にボタン追加
         foreach (ConditionalButton button in this.buttons)
         {
-            this.buttonPanel.Controls.Add(button.Button);
+            this.leftPanel.Controls.Add(button.Button);
+        }
+
+        // rightPanel にラベル追加
+        foreach (DataLabel label in this.labels)
+        {
+            this.rightPanel.Controls.Add(label.LabelPanel);
         }
 
         // イベントハンドラ
@@ -142,6 +165,10 @@ public partial class Form1 : Form
         foreach (ConditionalButton button in buttons)
         {
             button.SetButtonVisible(count);
+        }
+        foreach (DataLabel label in labels)
+        {
+            label.SetVisible(count);
         }
     }
 }
