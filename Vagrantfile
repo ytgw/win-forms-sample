@@ -3,7 +3,17 @@
 
 Vagrant.configure("2") do |config|
   # Windows 11 の Box（GusztavVargadr 氏作成の軽量・自動セットアップ済み評価版）
-  config.vm.box = "gusztavvargadr/visual-studio"
+  config.vm.box = "gusztavvargadr/windows-11"
+
+  config.vm.provision "shell", inline: <<-SHELL
+    Write-Host "Hello from Guest Windows VM!"
+    Set-ExecutionPolicy Unrestricted -Scope Process -Force
+
+    $wingetPath = Resolve-Path "C:\\Program Files\\WindowsApps\\Microsoft.DesktopAppInstaller_*_x64__8wekyb3d8bbwe\\winget.exe" | Select-Object -ExpandProperty Path -Last 1
+
+    & $wingetPath install --exact --silent --source winget --accept-package-agreements --accept-source-agreements --id Microsoft.DotNet.SDK.10
+    & $wingetPath install --exact --silent --source winget --accept-package-agreements --accept-source-agreements --id Microsoft.VisualStudio.Community
+  SHELL
 
   # VirtualBox の個別スペック設定
   config.vm.provider "virtualbox" do |vb|
