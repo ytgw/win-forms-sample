@@ -51,7 +51,7 @@ public class Form1UtilTest
     public void CreateLabelsは5個のラベルを返す()
     {
         // Act
-        var labels = new Form1Util().CreateLabels();
+        var labels = new Form1Util().CreateLabels(new DataStore());
 
         // Assert
         Assert.Equal(5, labels.Length);
@@ -67,7 +67,7 @@ public class Form1UtilTest
     public void CreateLabelsのテキストと非表示条件は関係している()
     {
         // Act
-        DataLabel[] labels = new Form1Util().CreateLabels();
+        DataLabel[] labels = new Form1Util().CreateLabels(new DataStore());
 
         // Assert
         foreach (var label in labels)

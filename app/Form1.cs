@@ -55,14 +55,14 @@ public class Form1Util
         return buttons;
     }
 
-    public DataLabel[] CreateLabels()
+    public DataLabel[] CreateLabels(DataStore dataStore)
     {
         DataLabel[] labels = {
-            new DataLabel("Label2", this.CreateVisibilityCondition(2)),
-            new DataLabel("Label3", this.CreateVisibilityCondition(3)),
-            new DataLabel("Label5", this.CreateVisibilityCondition(5)),
-            new DataLabel("Label7", this.CreateVisibilityCondition(7)),
-            new DataLabel("Label9", this.CreateVisibilityCondition(9)),
+            new DataLabel("Label2", this.CreateVisibilityCondition(2), dataStore),
+            new DataLabel("Label3", this.CreateVisibilityCondition(3), dataStore),
+            new DataLabel("Label5", this.CreateVisibilityCondition(5), dataStore),
+            new DataLabel("Label7", this.CreateVisibilityCondition(7), dataStore),
+            new DataLabel("Label9", this.CreateVisibilityCondition(9), dataStore),
         };
 
         return labels;
@@ -113,11 +113,13 @@ public partial class Form1 : Form
         AutoScroll = true,
     };
 
+    private readonly DataStore dataStore = new DataStore();
     private readonly ConditionalButton[] buttons = new Form1Util().CreateButtons();
-    private readonly DataLabel[] labels = new Form1Util().CreateLabels();
+    private readonly DataLabel[] labels;
 
     public Form1()
     {
+        labels = new Form1Util().CreateLabels(this.dataStore);
         InitializeComponent();
 
         // ヘッダーパネルにコントロール追加
@@ -161,14 +163,14 @@ public partial class Form1 : Form
 
     private void CountInput_ValueChanged(object _sender, EventArgs _e)
     {
-        int count = (int)countInput.Value;
+        this.dataStore.Count = (int)countInput.Value;
         foreach (ConditionalButton button in buttons)
         {
-            button.SetButtonVisible(count);
+            button.SetButtonVisible(this.dataStore.Count);
         }
         foreach (DataLabel label in labels)
         {
-            label.SetVisible(count);
+            label.Update();
         }
     }
 }

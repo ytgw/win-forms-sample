@@ -5,6 +5,12 @@ using System.Windows.Forms;
 namespace src;
 
 
+public class DataStore
+{
+    public int Count { get; set; } = 0;
+}
+
+
 public class DataLabel : IDisposable
 {
     public readonly Panel LabelPanel = new Panel
@@ -18,11 +24,12 @@ public class DataLabel : IDisposable
 
     private readonly Label NameLabel;
     private readonly Label ValueLabel;
-    private int count = 0;
+    private readonly DataStore dataStore;
 
-    public DataLabel(string text, Func<int, bool> shouldBeVisible)
+    public DataLabel(string text, Func<int, bool> shouldBeVisible, DataStore dataStore)
     {
         this.ShouldBeVisible = shouldBeVisible;
+        this.dataStore = dataStore;
 
         this.NameLabel = new Label
         {
@@ -34,7 +41,7 @@ public class DataLabel : IDisposable
         };
         this.ValueLabel = new Label
         {
-            Text = $"{count}",
+            Text = "null",
             Size = new Size(100, 30),
             Margin = new Padding(5),
             Location = new Point(100, 0),
@@ -42,19 +49,12 @@ public class DataLabel : IDisposable
         };
         this.LabelPanel.Controls.Add(this.NameLabel);
         this.LabelPanel.Controls.Add(this.ValueLabel);
-
-        this.NameLabel.Click += this.NameLabel_Click;
     }
 
-    private void NameLabel_Click(object _sender, EventArgs _e)
+    public void Update()
     {
-        this.count++;
-        this.ValueLabel.Text = $"{this.count}";
-    }
-
-    public void SetVisible(int num)
-    {
-        this.LabelPanel.Visible = this.ShouldBeVisible(num);
+        this.LabelPanel.Visible = this.ShouldBeVisible(dataStore.Count);
+        this.ValueLabel.Text = $"{dataStore.Count}";
     }
 
     public void Dispose()
