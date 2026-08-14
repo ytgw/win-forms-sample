@@ -15,7 +15,7 @@ Vagrant.configure("2") do |config|
     & $wingetPath install --exact --silent --source winget --accept-package-agreements --accept-source-agreements --id Microsoft.VisualStudio.Community
 
     # WinAppDriver のインストール
-    reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\AppModelUnlock" /t REG_DWORD /f /v "AllowDevelopmentWithoutDevLicense" /d "1"
+    reg add "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\AppModelUnlock" /t REG_DWORD /f /v "AllowDevelopmentWithoutDevLicense" /d "1"
     & $wingetPath install --exact --silent --source winget --accept-package-agreements --accept-source-agreements --id Microsoft.WindowsApplicationDriver
   SHELL
 
