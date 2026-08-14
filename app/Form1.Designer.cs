@@ -49,8 +49,6 @@ partial class Form1
 
         AutoScaleMode = AutoScaleMode.Font;
         ClientSize = new Size(900, 500);
-        Controls.Add(countLabel);
-        Controls.Add(countInput);
         Text = "Form1";
     }
 

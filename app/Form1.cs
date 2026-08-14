@@ -5,41 +5,6 @@ using System.Windows.Forms;
 namespace src;
 
 
-public class ConditionalButton: IDisposable
-{
-    public readonly Button Button;
-    public readonly Func<int, bool> ShouldBeVisible;
-
-    private int count = 0;
-    private readonly string text;
-
-    public ConditionalButton(string text, Func<int, bool> shouldBeVisible)
-    {
-        this.text = text;
-        this.Button = new Button { Text = text, Size = new Size(100, 40), Margin = new Padding(5) };
-        this.ShouldBeVisible = shouldBeVisible;
-        this.Button.Click += this.Button_Click;
-    }
-
-    private void Button_Click(object _sender, EventArgs _e)
-    {
-        this.count++;
-        this.Button.Text = $"{this.text}-{this.count}";
-    }
-
-    public void SetButtonVisible(int num)
-    {
-        this.Button.Visible = this.ShouldBeVisible(num);
-    }
-
-    public void Dispose()
-    {
-        this.Button.Click -= this.Button_Click;
-        this.Button.Dispose();
-    }
-}
-
-
 public class Form1Util
 {
     public Func<int, bool> CreateVisibilityCondition(int denominator)
@@ -94,6 +59,28 @@ public class Form1Util
 
 public partial class Form1 : Form
 {
+    // ヘッダーパネル（0-50px）
+    private readonly Panel headerPanel = new Panel
+    {
+        Dock = DockStyle.Top,
+        Height = 50,
+    };
+
+    // ボディパネル（50px以下）
+    private readonly Panel bodyPanel = new Panel
+    {
+        Dock = DockStyle.Fill,
+    };
+
+    // SplitContainer（ボディパネル内）
+    private readonly SplitContainer splitContainer = new SplitContainer
+    {
+        Dock = DockStyle.Fill,
+        Orientation = Orientation.Vertical,
+        IsSplitterFixed = true,
+    };
+
+    // buttonPanel（左半分）
     private readonly FlowLayoutPanel buttonPanel = new FlowLayoutPanel
     {
         Dock = DockStyle.Fill,
@@ -102,19 +89,51 @@ public partial class Form1 : Form
         Padding = new Padding(10),
         AutoScroll = true,
     };
+
+    // 右半分パネル（今後の拡張用）
+    private readonly Panel rightPanel = new Panel
+    {
+        Dock = DockStyle.Fill,
+        BackColor = Color.LightGray,
+    };
+
     private readonly ConditionalButton[] buttons = new Form1Util().CreateButtons();
 
     public Form1()
     {
         InitializeComponent();
-        this.Padding = new Padding(20, 50, 20, 20);
-        this.Controls.Add(buttonPanel);
+
+        // ヘッダーパネルにコントロール追加
+        headerPanel.Controls.Add(countLabel);
+        headerPanel.Controls.Add(countInput);
+
+        // ボディパネルに SplitContainer を追加
+        bodyPanel.Controls.Add(splitContainer);
+
+        // SplitContainer のパネルに追加
+        splitContainer.Panel1.Controls.Add(buttonPanel);
+        splitContainer.Panel2.Controls.Add(rightPanel);
+
+        // フォームにコントロール追加
+        this.Controls.Add(headerPanel);
+        this.Controls.Add(bodyPanel);
+
+        // buttonPanel にボタン追加
         foreach (ConditionalButton button in this.buttons)
         {
             this.buttonPanel.Controls.Add(button.Button);
         }
 
+        // イベントハンドラ
         this.countInput.ValueChanged += CountInput_ValueChanged;
+        this.Resize += Form1_Resize;
+        this.Load += Form1_Resize;
+    }
+
+    private void Form1_Resize(object _sender, EventArgs _e)
+    {
+        // 左右を半分に分割
+        splitContainer.SplitterDistance = this.splitContainer.ClientSize.Width / 2;
     }
 
     private void CountInput_ValueChanged(object _sender, EventArgs _e)
