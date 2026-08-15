@@ -72,70 +72,13 @@ public class Form1Util
 
 public partial class Form1 : Form
 {
-    // ヘッダーパネル（0-50px）
-    private readonly Panel headerPanel = new Panel
-    {
-        Dock = DockStyle.Top,
-        Height = 50,
-    };
-
-    // ボディパネル（50px以下）
-    private readonly Panel bodyPanel = new Panel
-    {
-        Dock = DockStyle.Fill,
-    };
-
-    // SplitContainer（ボディパネル内）
-    private readonly SplitContainer splitContainer = new SplitContainer
-    {
-        Dock = DockStyle.Fill,
-        Orientation = Orientation.Vertical,
-        IsSplitterFixed = true,
-    };
-
-    // 左パネル
-    private readonly FlowLayoutPanel leftPanel = new FlowLayoutPanel
-    {
-        Dock = DockStyle.Fill,
-        FlowDirection = FlowDirection.LeftToRight,
-        WrapContents = true,
-        Padding = new Padding(10),
-        AutoScroll = true,
-    };
-
-    // 右パネル
-    private readonly FlowLayoutPanel rightPanel = new FlowLayoutPanel
-    {
-        Dock = DockStyle.Fill,
-        FlowDirection = FlowDirection.LeftToRight,
-        WrapContents = true,
-        Padding = new Padding(10),
-        AutoScroll = true,
-    };
-
     private readonly DataStore dataStore = new DataStore();
     private readonly ConditionalButton[] buttons = new Form1Util().CreateButtons();
     private readonly DataLabel[] labels;
 
     public Form1()
     {
-        labels = new Form1Util().CreateLabels(this.dataStore);
         InitializeComponent();
-
-        // ヘッダーパネルにコントロール追加
-        headerPanel.Controls.Add(countLabel);
-        headerPanel.Controls.Add(countInput);
-
-        // ボディパネルに SplitContainer を追加
-        bodyPanel.Controls.Add(splitContainer);
-
-        // SplitContainer のパネルに追加
-        splitContainer.Panel1.Controls.Add(leftPanel);
-        splitContainer.Panel2.Controls.Add(rightPanel);
-
-        // フォームにコントロール追加(順番重要)
-        this.Controls.Add(bodyPanel);
-        this.Controls.Add(headerPanel);
 
         // leftPanel にボタン追加
         foreach (ConditionalButton button in this.buttons)
@@ -144,6 +87,7 @@ public partial class Form1 : Form
         }
 
         // rightPanel にラベル追加
+        labels = new Form1Util().CreateLabels(this.dataStore);
         foreach (DataLabel label in this.labels)
         {
             this.rightPanel.Controls.Add(label.LabelPanel);
@@ -157,8 +101,10 @@ public partial class Form1 : Form
 
     private void Form1_Resize(object _sender, EventArgs _e)
     {
+        // ヘッダーとボディの分割位置を設定
+        this.headerBodySplitter.SplitterDistance = 10;
         // 左右を半分に分割
-        splitContainer.SplitterDistance = this.splitContainer.ClientSize.Width / 2;
+        this.bodySplitter.SplitterDistance = this.bodySplitter.ClientSize.Width / 2;
     }
 
     private void CountInput_ValueChanged(object _sender, EventArgs _e)

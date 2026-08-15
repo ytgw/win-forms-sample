@@ -35,19 +35,69 @@ partial class Form1
     {
         components = new System.ComponentModel.Container();
 
-        countLabel = new Label();
-        countLabel.Name = "countLabel";
-        countLabel.Text = "Count";
-        countLabel.Location = new Point(50, 10);
-        countLabel.Size = new Size(200, 30);
+        headerBodySplitter = new SplitContainer
+        {
+            Dock = DockStyle.Fill,
+            IsSplitterFixed = true,
+            Name = "headerBodySplitter",
+            Orientation = Orientation.Horizontal,
+            SplitterDistance = 50,
+            Panel1MinSize = 50,
+        };
+        headerBodySplitter.Panel1.BackColor = Color.LightGray;
 
-        countInput = new NumericUpDown();
-        countInput.Name = "countInput";
-        countInput.Minimum = 0;
-        countInput.Maximum = 1000;
-        countInput.Value = 0;
-        countInput.Location = new Point(260, 10);
-        countInput.Size = new Size(100, 30);
+        bodySplitter = new SplitContainer
+        {
+            Dock = DockStyle.Fill,
+            IsSplitterFixed = true,
+            Name = "bodySplitter",
+            Orientation = Orientation.Vertical,
+        };
+
+        leftPanel = new FlowLayoutPanel
+        {
+            AutoScroll = true,
+            Dock = DockStyle.Fill,
+            FlowDirection = FlowDirection.LeftToRight,
+            Padding = new Padding(10),
+            WrapContents = true,
+        };
+
+        rightPanel = new FlowLayoutPanel
+        {
+            AutoScroll = true,
+            Dock = DockStyle.Fill,
+            FlowDirection = FlowDirection.LeftToRight,
+            Padding = new Padding(10),
+            WrapContents = true,
+        };
+
+        countLabel = new Label()
+        {
+            Location = new Point(50, 10),
+            Name = "countLabel",
+            Size = new Size(200, 30),
+            Text = "Count",
+        };
+
+        countInput = new NumericUpDown()
+        {
+            Location = new Point(260, 10),
+            Minimum = 0,
+            Maximum = 1000,
+            Name = "countInput",
+            Size = new Size(100, 30),
+            Value = 0,
+        };
+
+        Controls.Add(headerBodySplitter);
+
+        headerBodySplitter.Panel1.Controls.Add(countLabel);
+        headerBodySplitter.Panel1.Controls.Add(countInput);
+        headerBodySplitter.Panel2.Controls.Add(bodySplitter);
+
+        bodySplitter.Panel1.Controls.Add(leftPanel);
+        bodySplitter.Panel2.Controls.Add(rightPanel);
 
         AutoScaleMode = AutoScaleMode.Font;
         ClientSize = new Size(900, 500);
@@ -56,6 +106,10 @@ partial class Form1
 
     #endregion
 
+    private SplitContainer headerBodySplitter;
+    private SplitContainer bodySplitter;
+    private FlowLayoutPanel leftPanel ;
+    private FlowLayoutPanel rightPanel;
     private Label countLabel;
     private NumericUpDown countInput;
 }
