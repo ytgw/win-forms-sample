@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <!-- WinAppDriverの更新が止まっているためAppium.WebDriverも古いバージョンを使う -->
-    <PackageReference Include="Appium.WebDriver" Version="4.4.5" />
+    <PackageReference Include="Appium.WebDriver" Version="8.3.2" />
     <PackageReference Include="coverlet.collector" Version="10.0.1">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
