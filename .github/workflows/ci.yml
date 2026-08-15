@@ -1,0 +1,43 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  ci:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+      with:
+        dotnet-version: '10.0.x'
+
+    # WinAppDriverをバックグラウンドで起動(WinAppDriverをインストール済み)
+    - name: Start WinAppDriver
+      shell: powershell
+      run: |
+        $wadPath = "${env:ProgramFiles(x86)}\Windows Application Driver\WinAppDriver.exe"
+        
+        # バックグラウンドプロセスとして起動
+        Start-Process -FilePath $wadPath
+        
+        # 起動完了まで数秒待機
+        Start-Sleep -Seconds 3
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Check code formatting
+      run: dotnet format --verify-no-changes --no-restore
+
+    - name: Build
+      run: dotnet build
+
+    - name: Run tests
+      run: dotnet test --verbosity normal
